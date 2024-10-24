@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Aloe Vera",
+        "waterInterval": 7
+    },
+    {
+        "name": "Basil",
+        "waterInterval": 3
+    },
+    {
+        "name": "Cactus",
+        "waterInterval": 14
+    }
+]
