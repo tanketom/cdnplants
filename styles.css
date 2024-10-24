@@ -24,6 +24,10 @@ li {
     align-items: center;
 }
 
+li.overdue {
+    background-color: #ffcccc;
+}
+
 .qr-code {
     width: 50px;
     height: 50px;
