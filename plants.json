@@ -1,14 +1,19 @@
-[
-    {
-        "name": "Aloe Vera",
-        "waterInterval": 7
-    },
-    {
-        "name": "Basil",
-        "waterInterval": 3
-    },
-    {
-        "name": "Cactus",
-        "waterInterval": 14
-    }
-]
+{
+    "plants": [
+        {
+            "name": "Fern",
+            "waterInterval": 3, // days
+            "lastWatered": null
+        },
+        {
+            "name": "Cactus",
+            "waterInterval": 14, // days
+            "lastWatered": null
+        },
+        {
+            "name": "Bamboo",
+            "waterInterval": 7, // days
+            "lastWatered": null
+        }
+    ]
+}
