@@ -2,17 +2,17 @@
     "plants": [
         {
             "name": "Fern",
-            "waterInterval": 3, // days
+            "waterInterval": 3,
             "lastWatered": null
         },
         {
             "name": "Cactus",
-            "waterInterval": 14, // days
+            "waterInterval": 14,
             "lastWatered": null
         },
         {
             "name": "Bamboo",
-            "waterInterval": 7, // days
+            "waterInterval": 7,
             "lastWatered": null
         }
     ]
