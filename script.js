@@ -3,15 +3,16 @@ async function fetchPlants() {
     return response.json();
 }
 
-function daysSinceLastWatered(lastWatered) {
-    const lastDate = new Date(lastWatered);
+function daysSinceLastWatered(date) {
+    const lastDate = new Date(`${date.slice(4, 8)}-${date.slice(2, 4)}-${date.slice(0, 2)}`);
     const today = new Date();
     const diffTime = Math.abs(today - lastDate);
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 }
 
 function getNextWateringDate(plant) {
-    return new Date(new Date(plant.last_watered).getTime() + plant.watering_interval * 24 * 60 * 60 * 1000);
+    const lastWateredDate = new Date(`${plant.date.slice(4, 8)}-${plant.date.slice(2, 4)}-${plant.date.slice(0, 2)}`);
+    return new Date(lastWateredDate.getTime() + plant.water_days * 24 * 60 * 60 * 1000);
 }
 
 async function renderPlantList() {
@@ -22,8 +23,8 @@ async function renderPlantList() {
     plants.sort((a, b) => getNextWateringDate(a) - getNextWateringDate(b));
 
     plants.forEach(plant => {
-        const daysSince = daysSinceLastWatered(plant.last_watered);
-        const daysUntilNextWater = plant.watering_interval - daysSince;
+        const daysSince = daysSinceLastWatered(plant.date);
+        const daysUntilNextWater = plant.water_days - daysSince;
 
         const plantDiv = document.createElement('div');
         plantDiv.className = 'plant';
