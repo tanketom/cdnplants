@@ -30,6 +30,7 @@ async function renderPlantList() {
         plantDiv.className = 'plant';
         plantDiv.innerHTML = `
             <h2>${plant.name}</h2>
+            <p>Room: ${plant.room}</p>
             <p>Water in ${daysUntilNextWater} days</p>
             <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://yourdomain.com/watered?id=${plant.id}" class="qr-code" alt="QR Code">
         `;
