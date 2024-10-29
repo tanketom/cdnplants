@@ -1,41 +1,39 @@
-let plants = [
-    {
-        name: "Fern",
-        waterInterval: 3, // days
-        lastWatered: null
-    },
-    {
-        name: "Cactus",
-        waterInterval: 14, // days
-        lastWatered: null
-    },
-    {
-        name: "Bamboo",
-        waterInterval: 7, // days
-        lastWatered: null
-    }
-];
-
-function updatePlantStatus(index) {
-    let currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
-    plants[index].lastWatered = currentDate;
-    document.getElementById(`status-${index}`).innerText = `Last watered: ${currentDate}`;
-    console.log(`Plant ${plants[index].name} status updated:`, plants[index]);
+async function fetchPlants() {
+    const response = await fetch('/plants');
+    return response.json();
 }
 
-function renderPlants() {
-    const container = document.getElementById("plantsContainer");
-    plants.forEach((plant, index) => {
-        const plantDiv = document.createElement("div");
-        plantDiv.className = "plant";
+function daysSinceLastWatered(lastWatered) {
+    const lastDate = new Date(lastWatered);
+    const today = new Date();
+    const diffTime = Math.abs(today - lastDate);
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+}
+
+function getNextWateringDate(plant) {
+    return new Date(new Date(plant.last_watered).getTime() + plant.watering_interval * 24 * 60 * 60 * 1000);
+}
+
+async function renderPlantList() {
+    const plants = await fetchPlants();
+    const plantList = document.getElementById('plant-list');
+    plantList.innerHTML = '';
+
+    plants.sort((a, b) => getNextWateringDate(a) - getNextWateringDate(b));
+
+    plants.forEach(plant => {
+        const daysSince = daysSinceLastWatered(plant.last_watered);
+        const daysUntilNextWater = plant.watering_interval - daysSince;
+
+        const plantDiv = document.createElement('div');
+        plantDiv.className = 'plant';
         plantDiv.innerHTML = `
             <h2>${plant.name}</h2>
-            <p>Water every ${plant.waterInterval} days</p>
-            <p id="status-${index}">Last watered: ${plant.lastWatered ? plant.lastWatered : "Not yet watered"}</p>
-            <button onclick="updatePlantStatus(${index})">I watered</button>
+            <p>Water in ${daysUntilNextWater} days</p>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://yourdomain.com/watered?id=${plant.id}" class="qr-code" alt="QR Code">
         `;
-        container.appendChild(plantDiv);
+        plantList.appendChild(plantDiv);
     });
 }
 
-document.addEventListener("DOMContentLoaded", renderPlants);
+renderPlantList();
